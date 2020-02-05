@@ -75,7 +75,6 @@ class PagaConnectClient(object):
             JSON Object with access token inside
         """
         server_url = self.url(self.test)
-        print server_url
         access_token_url = server_url + "/paga-webservices/oauth2/token?"
 
         base64_string = get_basic_authorization(self.client_id, self.password)
@@ -83,7 +82,6 @@ class PagaConnectClient(object):
         url = "{0}grant_type=authorization_code&redirect_uri={1}&code={2}&scope={3}&user_data={4}".format(
             access_token_url, redirect_uri, authorization_code, scope, user_data)
 
-        print url
 
         headers = {
             'Authorization': "Basic " + base64_string
@@ -119,9 +117,7 @@ class PagaConnectClient(object):
             JSON Object with access token inside
         """
         server_url = self.url(self.test)
-        print server_url
         merchant_payment_url = server_url + "/paga-webservices/oauth2/secure/merchantPayment"
-        print merchant_payment_url
 
         if currency is None:
             payment_link = merchant_payment_url + "/referenceNumber" + \
@@ -138,7 +134,6 @@ class PagaConnectClient(object):
                            "/merchantCustomerReference/" + str(user_id) + "/merchantProductCode" + \
                            "/" + str(product_code) + "/currency/" + str(currency)
 
-        print payment_link
 
         headers = {
             'Authorization': "Bearer " + access_token,
@@ -147,7 +142,6 @@ class PagaConnectClient(object):
 
         response = requests.request(method="POST", url=payment_link,
                                     headers=headers)
-        print response
         return response.text
 
     def money_transfer(self, access_token, reference_number, amount, skip_messaging, recipient_credential):
@@ -157,7 +151,6 @@ class PagaConnectClient(object):
         money_transfer_url = server_url + "/paga-webservices/oauth2/secure/moneyTransfer/v2?" + "amount=" + str(amount) \
                              + "&referenceNumber=" + reference_number + "&skipMessaging=" \
                              + str(skip_messaging) + "&recipientCredential=" + recipient_credential
-        print money_transfer_url
 
         headers = {
             'Authorization': "Bearer " + access_token,
